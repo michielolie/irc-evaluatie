@@ -132,4 +132,42 @@ for code in stations_stats[resample_rule]:
             
             plt.close(fig)
 
+
+# %%
+
+fig, ax = plt.subplots(4, 2, figsize=(11,16))
+fig.delaxes(ax[3,1])
+
+
+for code in stations_stats[resample_rule]:
+    print(code)
+    fig.suptitle(f"{code}", fontsize=20)
+    station_stats = stations_stats[resample_rule][code]
+
+    for i, irc_type in enumerate(WIWB_SETTINGS.keys()):
+        for j, resample_rule in enumerate(["h", "d"]):
+            station_stats = stations_stats[resample_rule][code]
+            station_stats.plot_scatter_ax(irc_type=irc_type, ax=ax[i,j])
+
+    val1 = ["{:X}".format(i) for i in range(10)] 
+    val2 = ["{:02X}".format(6 * i) for i in range(6)] 
+    val3 = [["" for c in range(10)] for r in range(6)] 
+
+    table = ax[3,0].table( 
+        cellText = val3,  
+        rowLabels = val2,  
+        colLabels = val1, 
+        #rowColours =["palegreen"] * 10,  
+        #colColours =["palegreen"] * 10, 
+        cellLoc ='center',  
+        loc ='upper left')         
+   
+    ax[3,0].set_title('Statistieken: {code}', fontweight ="bold") 
+    #plt.show(station_stats.plot_scatter(irc_type='irc_final') ) 
+    #fig.suptitle(f"{self.station.name} - {self.station.organisation}", fontsize=20)
+    fig.savefig(f"../02_img/{code}.png")
+            
+    plt.close(fig)
+    
+
 # %%
